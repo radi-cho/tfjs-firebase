@@ -4,32 +4,8 @@ require("@tensorflow/tfjs-node");
 var fitData = require("./utils").fitData;
 var vocabulary = require("./utils").vocabulary;
 
-// 0 - bad reveiws
-// 1 - positive reviews
-
-var train_x = [
-  // non-positive
-  "The customer support is really slow, ugly and bad.",
-  "Your app is slow. The support is slow. Everything is slow in your company!",
-  "The staff inside is so ugly",
-  "We cannot use your product, because it is slow and ugly.",
-  "This just cannot be used. Really bad and overrated",
-  "Your products are overrated",
-  // positive
-  "Your product is great, fast and beautiful.",
-  "Your app is cool, fast, looks beautiful and well developed.",
-  "It's amazing. The staff is fast and kind. The products are cheap and well organized. Eveything is really good.",
-  "Fast shipping, low prices, kind support",
-  "The people in your company are so kind and respond to me as fast as they can."
-];
-
-var train_y = [[0], [0], [0], [0], [0], [0], [1], [1], [1], [1], [1]];
-
-// train_x.forEach(function(str, i) {
-//   train_x[i] = fitData(str);
-// });
-train_x = [];
-train_y = [];
+var train_x = [];
+var train_y = [];
 
 var a = 2;
 if (vocabulary.length < 10) {

@@ -17,9 +17,7 @@ async function predict(test_x) {
   console.log(label);
 }
 
-var test_x = [
-  fitData("good good cool cheap cool awesome kind fast kind cheap")
-];
+var test_x = [fitData("")];
 
 // console.log(test_x);
 predict(test_x);
