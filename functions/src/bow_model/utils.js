@@ -1,4 +1,4 @@
-var vocabulary = [
+const vocabulary = [
   // bad
   "bad",
   "slow",
@@ -15,20 +15,20 @@ var vocabulary = [
   "quality"
 ];
 
-var fitData = function(string) {
-  var stringSplit = string.replace(/[^a-zA-Z ]+/g, "").split(" ");
-  var words = {};
+const fitData = function(string) {
+  const stringSplit = string.replace(/[^a-zA-Z ]+/g, "").split(" ");
+  const words = {};
 
-  stringSplit.forEach(function(ev) {
+  stringSplit.forEach(ev => {
     words[ev] =
       typeof words[ev] === "number" ? (words[ev] += 1) : (words[ev] = 1);
   });
 
-  var x = vocabulary.map(function(ev) {
+  const x = vocabulary.map(ev => {
     return words[ev] ? words[ev] : 0;
   });
 
-  return x;
+  return [x];
 };
 
 exports.fitData = fitData;

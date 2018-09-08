@@ -4,37 +4,46 @@ const tf = require("@tensorflow/tfjs");
 require("tfjs-node-save");
 const fitData = require("./utils").fitData;
 
+const admin = require("firebase-admin");
+const db = admin.firestore();
+
 const { Storage } = require("@google-cloud/storage");
-const gcs = new Storage();
+const gcs = new Storage({
+  projectId: "feedback-classifier-tfjs-cloud",
+});
+
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
 
-exports.predict = functions.storage.object().onFinalize(async object => {
-  // const a = async object => {
-  const fileBucket = object.bucket;
-  const filePath = object.name;
-  const contentType = object.contentType;
-  const metageneration = object.metageneration;
+exports.predict = functions.firestore
+  .document("comments/{commentId}")
+  .onCreate(async (snap, context) => {
+    const fileBucket = "feedback-classifier-tfjs-cloud.appspot.com";
 
-  const bucket = gcs.bucket(fileBucket);
-  const tempFilePath = path.join(os.tmpdir(), "model.json");
-  const tempFilePath2 = path.join(os.tmpdir(), "weights.bin");
-  const modelPath = "file:///" + path.join(os.tmpdir(), "model.json");
+    const bucket = gcs.bucket(fileBucket);
+    const tempJSONPath = path.join(os.tmpdir(), "model.json");
+    const tempBINPath = path.join(os.tmpdir(), "weights.bin");
 
-  await bucket.file(filePath).download({ destination: tempFilePath });
-  await bucket.file("weights.bin").download({ destination: tempFilePath2 });
+    const existJSON = await bucket.file("model.json").exists().then(ex => ex[0]);
+    const existBIN = await bucket.file("weights.bin").exists().then(ex => ex[0]);
 
-  const model = await tf.loadModel(modelPath);
+    if (!existJSON || !existBIN) throw Error("Missing artifacts.")
 
-  const test_x = [fitData("bad, really bad, ugly overrated")];
-  const score = model.predict(tf.tensor2d(test_x)).dataSync()[0];
-  const label = score < 0.5 ? "bad" : "good";
+    await bucket.file("model.json").download({ destination: tempJSONPath });
+    await bucket.file("weights.bin").download({ destination: tempBINPath });
 
-  console.log(score);
-  console.log(label);
+    const modelPath = "file://" + tempJSONPath;
+    const model = await tf.loadModel(modelPath);
 
-  fs.unlinkSync(tempFilePath);
-  fs.unlinkSync(tempFilePath2);
-});
-// };
+    const data = snap.data()
+    const test_x = fitData(data.text);
+    const score = model.predict(tf.tensor2d(test_x)).dataSync()[0];
+
+    const label = score < 0.5 ? "bad" : "good";
+
+    db.collection("comments").doc(snap.id).set({label: label})
+
+    fs.unlinkSync(tempJSONPath);
+    fs.unlinkSync(tempBINPath);
+  });
