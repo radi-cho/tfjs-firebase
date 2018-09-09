@@ -1,16 +1,14 @@
 const functions = require("firebase-functions");
-
-const tf = require("@tensorflow/tfjs");
-require("tfjs-node-save");
-const fitData = require("./utils").fitData;
-
 const admin = require("firebase-admin");
 const db = admin.firestore();
 
+const tf = require("@tensorflow/tfjs");
+const fitData = require("./utils").fitData;
+require("tfjs-node-save");
+
 const { Storage } = require("@google-cloud/storage");
-const gcs = new Storage({
-  projectId: "feedback-classifier-tfjs-cloud",
-});
+const gcs = new Storage({ projectId: "feedback-classifier-tfjs-cloud" });
+const bucket = gcs.bucket("feedback-classifier-tfjs-cloud.appspot.com");
 
 const path = require("path");
 const os = require("os");
@@ -19,9 +17,9 @@ const fs = require("fs");
 exports.predict = functions.firestore
   .document("comments/{commentId}")
   .onCreate(async (snap, context) => {
-    const fileBucket = "feedback-classifier-tfjs-cloud.appspot.com";
+    const data = snap.data()
+    if (data.label) return;
 
-    const bucket = gcs.bucket(fileBucket);
     const tempJSONPath = path.join(os.tmpdir(), "model.json");
     const tempBINPath = path.join(os.tmpdir(), "weights.bin");
 
@@ -36,13 +34,11 @@ exports.predict = functions.firestore
     const modelPath = "file://" + tempJSONPath;
     const model = await tf.loadModel(modelPath);
 
-    const data = snap.data()
     const test_x = fitData(data.text);
     const score = model.predict(tf.tensor2d(test_x)).dataSync()[0];
 
-    const label = score < 0.5 ? "bad" : "good";
-
-    db.collection("comments").doc(snap.id).set({label: label})
+    data.label = score < 0.5 ? "negative" : "positive";
+    db.collection("comments").doc(snap.id).set(data)
 
     fs.unlinkSync(tempJSONPath);
     fs.unlinkSync(tempBINPath);
