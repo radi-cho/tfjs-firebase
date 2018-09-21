@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "@tensorflow/tfjs": "^0.12.4",
-    "@tensorflow/tfjs-node": "^0.1.13"
+    "tfjs-node-save": "^0.0.2"
   }
 }

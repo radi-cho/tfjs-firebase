@@ -1,0 +1,45 @@
+[debug] [2018-09-21T18:38:44.820Z] ----------------------------------------------------------------------
+[debug] [2018-09-21T18:38:44.824Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\radic\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase functions:shell
+[debug] [2018-09-21T18:38:44.825Z] CLI Version:   4.0.2
+[debug] [2018-09-21T18:38:44.825Z] Platform:      win32
+[debug] [2018-09-21T18:38:44.825Z] Node Version:  v10.3.0
+[debug] [2018-09-21T18:38:44.826Z] Time:          Fri Sep 21 2018 21:38:44 GMT+0300 (FLE Daylight Time)
+[debug] [2018-09-21T18:38:44.826Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-09-21T18:38:44.847Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-09-21T18:38:44.849Z] > authorizing via signed-in user
+[debug] [2018-09-21T18:38:44.853Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-09-21T18:38:44.853Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/xZrclKWTmaZh9RRlwbjuQPLnfxo1G4fpK3BCwTzdnx4',
+  client_id:
+   '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope:
+   'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Fri Sep 21 2018 21:38:44 GMT+0300 (FLE Daylight Time)
+[debug] [2018-09-21T18:38:45.367Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-21T18:38:45.386Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/feedback-classifier-tfjs-cloud  
+  
+ Fri Sep 21 2018 21:38:45 GMT+0300 (FLE Daylight Time)
+[debug] [2018-09-21T18:38:46.292Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-21T18:38:46.294Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/feedback-classifier-tfjs-cloud/tokens  
+  
+ Fri Sep 21 2018 21:38:46 GMT+0300 (FLE Daylight Time)
+[debug] [2018-09-21T18:38:46.951Z] <<< HTTP RESPONSE 200
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-09-21T18:38:49.439Z] Fetching environment
+[debug] [2018-09-21T18:38:49.443Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/feedback-classifier-tfjs-cloud  
+  
+ Fri Sep 21 2018 21:38:49 GMT+0300 (FLE Daylight Time)
+[debug] [2018-09-21T18:38:51.441Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-21T18:38:51.442Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/46788471559:getServerAppConfig  
+  
+ Fri Sep 21 2018 21:38:51 GMT+0300 (FLE Daylight Time)
+[debug] [2018-09-21T18:38:51.938Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-21T18:38:51.939Z] Starting @google-cloud/functions-emulator
+[debug] [2018-09-21T18:38:56.037Z] Parsing function triggers
+[debug] [2018-09-21T18:38:58.066Z] Deploying functions locally
+[info] +  functions: runLinearModel
+[info] +  functions: train
+[info] +  functions: predict

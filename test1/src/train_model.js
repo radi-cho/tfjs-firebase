@@ -55,5 +55,5 @@ const ys = tf.tensor2d(train_y);
 model.fit(xs, ys, { epochs: 5 }).then(() => {
   // This example is purposed only for testing
   /// TODO: Use relative paths
-  model.save("file:///Projects/tensorflow/tfjs/test1/model");
+  model.save("file:///Projects/tensorflow/tfjs-firebase/test1/model");
 });

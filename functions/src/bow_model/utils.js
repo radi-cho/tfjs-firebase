@@ -28,7 +28,7 @@ const fitData = function(string) {
     return words[ev] ? words[ev] : 0;
   });
 
-  return [x];
+  return x;
 };
 
 exports.fitData = fitData;

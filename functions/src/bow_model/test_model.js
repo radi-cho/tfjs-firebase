@@ -14,7 +14,10 @@ const path = require("path");
 const os = require("os");
 const fs = require("fs");
 
-exports.predict = functions.firestore
+// tfjs and gcs are using a lot of memory, so increasing it will speed up the functions
+exports.predict = functions
+  .runWith({ memory: "1GB" })
+  .firestore
   .document("comments/{commentId}")
   .onCreate(async (snap, context) => {
     const data = snap.data()
@@ -34,7 +37,7 @@ exports.predict = functions.firestore
     const modelPath = "file://" + tempJSONPath;
     const model = await tf.loadModel(modelPath);
 
-    const test_x = fitData(data.text);
+    const test_x = [fitData(data.text)];
     const score = model.predict(tf.tensor2d(test_x)).dataSync()[0];
 
     data.label = score < 0.5 ? "negative" : "positive";

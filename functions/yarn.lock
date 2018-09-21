@@ -83,6 +83,24 @@
     stream-events "^1.0.4"
     through2 "^2.0.3"
 
+"@google-cloud/common@^0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/common/-/common-0.23.0.tgz#34076548b31817324baad23257b4ce27d6cd0a40"
+  dependencies:
+    "@google-cloud/projectify" "^0.3.0"
+    "@google-cloud/promisify" "^0.3.0"
+    "@types/duplexify" "^3.5.0"
+    "@types/request" "^2.47.0"
+    arrify "^1.0.1"
+    duplexify "^3.6.0"
+    ent "^2.2.0"
+    extend "^3.0.1"
+    google-auth-library "^1.6.0"
+    is "^3.2.1"
+    pify "^4.0.0"
+    retry-request "^4.0.0"
+    through2 "^2.0.3"
+
 "@google-cloud/firestore@^0.15.4":
   version "0.15.4"
   resolved "https://registry.yarnpkg.com/@google-cloud/firestore/-/firestore-0.15.4.tgz#5a23cc7d0c516d0e019e0a8554749b518a0f6723"
@@ -98,6 +116,24 @@
     lodash.merge "^4.6.1"
     pkg-up "^2.0.0"
     through2 "^2.0.3"
+
+"@google-cloud/paginator@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/paginator/-/paginator-0.1.0.tgz#3d1528a749a29968f4d83eafdc4b94247787f26e"
+  dependencies:
+    arrify "^1.0.1"
+    extend "^3.0.1"
+    is "^3.2.1"
+    split-array-stream "^2.0.0"
+    stream-events "^1.0.4"
+
+"@google-cloud/projectify@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/projectify/-/projectify-0.3.0.tgz#adb984ac61f7ec855558ef677621b2488c50d05d"
+
+"@google-cloud/promisify@^0.3.0":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@google-cloud/promisify/-/promisify-0.3.1.tgz#f641e6d944a8e0a05ee0cb1091dfa60089becdba"
 
 "@google-cloud/storage@^1.6.0":
   version "1.7.0"
@@ -119,6 +155,33 @@
     once "^1.3.1"
     pumpify "^1.5.1"
     request "^2.85.0"
+    safe-buffer "^5.1.1"
+    snakeize "^0.1.0"
+    stream-events "^1.0.1"
+    through2 "^2.0.0"
+    xdg-basedir "^3.0.0"
+
+"@google-cloud/storage@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/storage/-/storage-2.0.0.tgz#0f82ea48d2cafef64e336512e76340bf280f03c6"
+  dependencies:
+    "@google-cloud/common" "^0.23.0"
+    "@google-cloud/paginator" "^0.1.0"
+    "@google-cloud/promisify" "^0.3.0"
+    arrify "^1.0.0"
+    async "^2.0.1"
+    compressible "^2.0.12"
+    concat-stream "^1.5.0"
+    create-error-class "^3.0.2"
+    duplexify "^3.5.0"
+    extend "^3.0.0"
+    gcs-resumable-upload "^0.12.0"
+    hash-stream-validation "^0.2.1"
+    is "^3.0.1"
+    mime "^2.2.0"
+    mime-types "^2.0.8"
+    once "^1.3.1"
+    pumpify "^1.5.1"
     safe-buffer "^5.1.1"
     snakeize "^0.1.0"
     stream-events "^1.0.1"
@@ -195,28 +258,9 @@
     "@types/webgl2" "~0.0.4"
     seedrandom "~2.4.3"
 
-"@tensorflow/tfjs-core@^0.12.16":
-  version "0.12.16"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-core/-/tfjs-core-0.12.16.tgz#f9c6420a1d9ae741fe95698aa32dbcbb8a308e2e"
-  dependencies:
-    "@types/seedrandom" "~2.4.27"
-    "@types/webgl-ext" "~0.0.29"
-    "@types/webgl2" "~0.0.4"
-    seedrandom "~2.4.3"
-
 "@tensorflow/tfjs-layers@0.7.5":
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-layers/-/tfjs-layers-0.7.5.tgz#54241110e0a6e194eafbbd18babca0978788e930"
-
-"@tensorflow/tfjs-node@^0.1.14":
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-node/-/tfjs-node-0.1.14.tgz#570c9227e0723f06faf6c43c1ddf349ef418385d"
-  dependencies:
-    adm-zip "^0.4.11"
-    bindings "~1.3.0"
-    progress "^2.0.0"
-    rimraf "^2.6.2"
-    tar "^4.4.6"
 
 "@tensorflow/tfjs@^0.12.6":
   version "0.12.6"
@@ -382,10 +426,6 @@ acorn@^3.0.4:
 acorn@^5.0.0, acorn@^5.5.0:
   version "5.7.2"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.2.tgz#91fa871883485d06708800318404e72bfb26dcc5"
-
-adm-zip@^0.4.11:
-  version "0.4.11"
-  resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.4.11.tgz#2aa54c84c4b01a9d0fb89bb11982a51f13e3d62a"
 
 ajv-keywords@^2.1.0:
   version "2.1.1"
@@ -556,10 +596,6 @@ bcrypt-pbkdf@^1.0.0:
   resolved "https://registry.yarnpkg.com/bcrypt-pbkdf/-/bcrypt-pbkdf-1.0.2.tgz#a4301d389b6a43f9b67ff3ca11a3f6637e360e9e"
   dependencies:
     tweetnacl "^0.14.3"
-
-bindings@~1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.3.0.tgz#b346f6ecf6a95f5a815c5839fc7cdb22502f1ed7"
 
 body-parser@1.18.2:
   version "1.18.2"
@@ -784,6 +820,17 @@ concat-stream@^1.5.0, concat-stream@^1.6.0:
 configstore@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/configstore/-/configstore-3.1.2.tgz#c6f25defaeef26df12dd33414b001fe81a543f8f"
+  dependencies:
+    dot-prop "^4.1.0"
+    graceful-fs "^4.1.2"
+    make-dir "^1.0.0"
+    unique-string "^1.0.0"
+    write-file-atomic "^2.0.0"
+    xdg-basedir "^3.0.0"
+
+configstore@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/configstore/-/configstore-4.0.0.tgz#5933311e95d3687efb592c528b922d9262d227e7"
   dependencies:
     dot-prop "^4.1.0"
     graceful-fs "^4.1.2"
@@ -1418,6 +1465,17 @@ gcs-resumable-upload@^0.10.2:
     request "^2.85.0"
     stream-events "^1.0.3"
 
+gcs-resumable-upload@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/gcs-resumable-upload/-/gcs-resumable-upload-0.12.0.tgz#604e746b4d34112459d9e02d8ce70490bdf50a1d"
+  dependencies:
+    axios "^0.18.0"
+    configstore "^4.0.0"
+    google-auth-library "^1.5.0"
+    pumpify "^1.5.1"
+    request "^2.87.0"
+    stream-events "^1.0.4"
+
 get-value@^2.0.3, get-value@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
@@ -1477,7 +1535,7 @@ globby@^8.0.0, globby@^8.0.1:
     pify "^3.0.0"
     slash "^1.0.0"
 
-google-auth-library@^1.3.1, google-auth-library@^1.6.0, google-auth-library@^1.6.1:
+google-auth-library@^1.3.1, google-auth-library@^1.5.0, google-auth-library@^1.6.0, google-auth-library@^1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-1.6.1.tgz#9c73d831ad720c0c3048ab89d0ffdec714d07dd2"
   dependencies:
@@ -2421,6 +2479,10 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
+pify@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.0.tgz#db04c982b632fd0df9090d14aaf1c8413cadb695"
+
 pinkie-promise@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/pinkie-promise/-/pinkie-promise-2.0.1.tgz#2135d6dfa7a358c069ac9b178776288228450ffa"
@@ -2744,7 +2806,7 @@ retry-request@^4.0.0:
   dependencies:
     through2 "^2.0.0"
 
-rimraf@^2.2.8, rimraf@^2.6.1, rimraf@^2.6.2:
+rimraf@^2.2.8, rimraf@^2.6.1:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   dependencies:
@@ -3067,7 +3129,7 @@ table@4.0.2:
     slice-ansi "1.0.0"
     string-width "^2.1.1"
 
-tar@^4, tar@^4.4.6:
+tar@^4:
   version "4.4.6"
   resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.6.tgz#63110f09c00b4e60ac8bcfe1bf3c8660235fbc9b"
   dependencies:
@@ -3083,12 +3145,9 @@ text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
-tfjs-node-save@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/tfjs-node-save/-/tfjs-node-save-0.0.1.tgz#c06728c411067ba76b4705f656acf9df04a1bd61"
-  dependencies:
-    "@tensorflow/tfjs-core" "^0.12.16"
-    "@tensorflow/tfjs-node" "^0.1.14"
+tfjs-node-save@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/tfjs-node-save/-/tfjs-node-save-0.0.2.tgz#330ea085ea1d2f16449f28bcc055f9f4b412a615"
 
 through2@^2.0.0, through2@^2.0.3:
   version "2.0.3"
