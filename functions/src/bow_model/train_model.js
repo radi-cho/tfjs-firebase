@@ -7,117 +7,78 @@ db.settings(settings);
 const { Storage } = require("@google-cloud/storage");
 const gcs = new Storage({ projectId: "feedback-classifier-tfjs-cloud" });
 const bucket = gcs.bucket("feedback-classifier-tfjs-cloud.appspot.com");
-const fitData = require("./utils").fitData;
 
 const tf = require("@tensorflow/tfjs");
 require("tfjs-node-save");
+const { fitData, vocabulary } = require("./utils");
 
-const os = require("os");
+const tmpdir = require("os").tmpdir();
 const fs = require("fs");
-const join = require("path").join;
+const { join } = require("path");
 
-// tfjs and gcs are using a lot of memory, so increasing it will speed up the functions
+// TFJS and gcs are using a lot of memory, so increasing it will speed up the functions
 exports.train = functions
   .runWith({ memory: "2GB" })
   .https.onRequest(async (request, response) => {
-    const existJSON = await bucket
-      .file("model.json")
-      .exists()
-      .then(ex => ex[0]);
-    const existBIN = await bucket
-      .file("weights.bin")
-      .exists()
-      .then(ex => ex[0]);
+    const existJSON = await bucket.file("model.json").exists().then(ex => ex[0]);
+    const existBIN = await bucket.file("weights.bin").exists().then(ex => ex[0]);
 
     if (!existJSON || !existBIN) {
       const model = tf.sequential();
-      // vocab length
-      model.add(tf.layers.dense({ units: 2, inputShape: [12] }));
+      model.add(tf.layers.dense({ units: 2, inputShape: [vocabulary.length] }));
       model.add(tf.layers.dense({ units: 1, inputShape: [2] }));
       model.compile({ loss: "meanSquaredError", optimizer: "sgd" });
 
-      let xs_data = [];
-      let ys_data = [];
-
-      await db
-        .collection("comments")
-        .get()
-        .then(querySnapshot => {
+      await db.collection("comments").get()
+        .then(async querySnapshot => {
           // Get tensor-like arrays from Firestore
-          xs_data = querySnapshot.docs.map(doc => fitData(doc.data().text));
-          ys_data = querySnapshot.docs.map(
-            doc => (doc.data().y === "positive" ? [1] : [0])
-          );
-          console.log("Data retrieved.");
-          return true;
+          return await trainSave(model, querySnapshot);
         });
-
-      const xs = tf.tensor2d(xs_data);
-      const ys = tf.tensor2d(ys_data);
-
-      await model.fit(xs, ys, { epochs: 5 });
-
-      const modelPath = join(os.tmpdir(), "model");
-      const tempJSONPath = join(modelPath, "model.json");
-      const tempBINPath = join(modelPath, "weights.bin");
-
-      await model.save("file://" + modelPath);
-      await bucket.upload(tempJSONPath);
-      await bucket.upload(tempBINPath);
-
-      console.log("New files, uploaded.");
-
-      fs.unlinkSync(tempJSONPath);
-      fs.unlinkSync(tempBINPath);
     } else {
-      // await retrain();
+      // Download the files if they exist
+      await bucket.file("model.json").download({ destination: join(tmpdir, "model.json") });
+      await bucket.file("weights.bin").download({ destination: join(tmpdir, "weights.bin") });
 
-      const tempJSONPath = join(os.tmpdir(), "model.json");
-      const tempBINPath = join(os.tmpdir(), "weights.bin");
-
-      await bucket.file("model.json").download({ destination: tempJSONPath });
-      await bucket.file("weights.bin").download({ destination: tempBINPath });
-
-      const modelJSON = "file://" + tempJSONPath;
-      const model = await tf.loadModel(modelJSON);
+      const model = await tf.loadModel("file://" + join(tmpdir, "model.json"));
       model.compile({ loss: "meanSquaredError", optimizer: "sgd" });
 
-      const lastUpdated = await bucket
-        .file("weights.bin")
-        .getMetadata()
+      const lastUpdated = await bucket.file("weights.bin").getMetadata()
         .then(metadata => new Date(metadata[0].updated));
 
-      await db
-        .collection("comments")
-        .where("publishedAt", ">", lastUpdated)
-        .get()
+      await db.collection("comments").where("publishedAt", ">", lastUpdated).get()
         .then(async querySnapshot => {
-          if (!querySnapshot.docs.length) {
-            response.send("No records to retrain with.");
-            return false;
-          }
-
-          const xs_data = querySnapshot.docs.map(doc => fitData(doc.data().text));
-          const ys_data = querySnapshot.docs.map(
-            doc => (doc.data().y === "positive" ? [1] : [0])
-          );
-
-          const xs = tf.tensor2d(xs_data);
-          const ys = tf.tensor2d(ys_data);
-          await model.fit(xs, ys, { epochs: 5 });
-    
-          const modelPath = join(os.tmpdir(), "model");
-          await model.save("file://" + modelPath);
-          await bucket.upload(tempJSONPath);
-          await bucket.upload(tempBINPath);
-
-          return true;
+          return await trainSave(model, querySnapshot);
         });
     }
 
-    await response.send("Success");
+    response.send("Success");
   });
 
-// const retrain = async () => {
+const trainSave = async (model, querySnapshot) => {
+  if (!querySnapshot.docs.length) return false;
 
-// };
+  const xs_data = querySnapshot.docs.map(doc => fitData(doc.data().text));
+  const ys_data = querySnapshot.docs.map(
+    doc => (doc.data().y === "positive" ? [1] : [0])
+  );
+
+  const xs = tf.tensor2d(xs_data);
+  const ys = tf.tensor2d(ys_data);
+
+  // train the model
+  await model.fit(xs, ys, { epochs: 5 });
+
+  const modelPath = join(tmpdir, "model");
+  const tempJSONPath = join(modelPath, "model.json");
+  const tempBINPath = join(modelPath, "weights.bin");щ
+
+  await model.save("file://" + modelPath);
+  await bucket.upload(tempJSONPath);
+  await bucket.upload(tempBINPath);
+  console.log("New files, uploaded.");
+
+  // Delete the temporary files
+  fs.unlinkSync(tempJSONPath);
+  fs.unlinkSync(tempBINPath);
+  return true;
+};
