@@ -59,7 +59,7 @@ const trainSave = async (model, querySnapshot) => {
 
   const xs_data = querySnapshot.docs.map(doc => fitData(doc.data().text));
   const ys_data = querySnapshot.docs.map(
-    doc => (doc.data().y === "positive" ? [1] : [0])
+    doc => (doc.data().label === "positive" ? [1] : [0])
   );
 
   const xs = tf.tensor2d(xs_data);
