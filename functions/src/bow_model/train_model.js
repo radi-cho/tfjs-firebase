@@ -70,7 +70,7 @@ const trainSave = async (model, querySnapshot) => {
 
   const modelPath = join(tmpdir, "model");
   const tempJSONPath = join(modelPath, "model.json");
-  const tempBINPath = join(modelPath, "weights.bin");щ
+  const tempBINPath = join(modelPath, "weights.bin");
 
   await model.save("file://" + modelPath);
   await bucket.upload(tempJSONPath);
