@@ -1,0 +1,10 @@
+{
+    "name": "TensorFlow.js + Firebase Demo",
+    "platforms": [
+        "Admin"
+    ],
+    "content": "README.md",
+    "related": [
+        "firebase/functions-samples"
+    ]
+}
