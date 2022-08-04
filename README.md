@@ -1,14 +1,14 @@
 # Bag of words text classification
 
-This project covers:
-- Training model with Tensorflow.js inside Cloud Functions and with data from firestore (using only JavaScript).
-- Retraining the model if it was already trained and save to finish quickly and efficiently.
+This workshop covers:
+- Training a model with Tensorflow.js inside Cloud Functions using data from Firestore (JavaScript only).
+- Retraining a model; Saving and loading a model.
 - Making predictions with a cloud function.
 
-I've created as simple as possible usecase. My model should predict if a comment (like YouTube one, or a Play store review) is positive or negative. I train it from Firestore database using NodeJS. You can fell free to clone the project and use it for any purpose.
-The code can be easly modified to predict star reviews, app statistics and much more.
+The developed model can predict if a comment is positive or negative. We train it with data from the Firestore database.
+The code can be easily modified to predict star reviews, app statistics, etc.
 
-# Demos
+# Demo
 
 ## Training
 
